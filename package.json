@@ -1,0 +1,124 @@
+{
+  "name": "debt-radar",
+  "displayName": "Debt Radar",
+  "description": "Living map of technical debt with git history context",
+  "version": "0.1.0",
+  "publisher": "devkaliper",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "technical debt",
+    "code quality",
+    "git analysis",
+    "complexity",
+    "todos"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "debtRadar.scan",
+        "title": "Debt Radar: Scan Workspace"
+      },
+      {
+        "command": "debtRadar.openDashboard",
+        "title": "Debt Radar: Open Dashboard"
+      },
+      {
+        "command": "debtRadar.scanFile",
+        "title": "Debt Radar: Scan Current File"
+      },
+      {
+        "command": "debtRadar.clearIgnored",
+        "title": "Debt Radar: Clear Ignored Items"
+      },
+      {
+        "command": "debtRadar.exportReport",
+        "title": "Debt Radar: Export Report (JSON)"
+      }
+    ],
+    "configuration": {
+      "title": "Debt Radar",
+      "properties": {
+        "debtRadar.staleDaysThreshold": {
+          "type": "number",
+          "default": 365,
+          "description": "Number of days before a file is considered stale"
+        },
+        "debtRadar.staleImportThreshold": {
+          "type": "number",
+          "default": 5,
+          "description": "Minimum imports for a stale file to be considered critical"
+        },
+        "debtRadar.complexityThresholds": {
+          "type": "object",
+          "default": {
+            "low": 5,
+            "medium": 10,
+            "high": 15,
+            "critical": 25
+          },
+          "description": "Cyclomatic complexity thresholds"
+        },
+        "debtRadar.todoPatterns": {
+          "type": "array",
+          "default": ["TODO", "FIXME", "HACK", "XXX", "TEMP"],
+          "description": "Patterns to detect TODOs in code"
+        },
+        "debtRadar.excludeGlobs": {
+          "type": "array",
+          "default": ["**/node_modules/**", "**/dist/**", "**/.git/**"],
+          "description": "Glob patterns to exclude from scanning"
+        },
+        "debtRadar.scanOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically scan on file save"
+        },
+        "debtRadar.showInlineDecorations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline debt decorations in editor"
+        },
+        "debtRadar.maxFilesToScan": {
+          "type": "number",
+          "default": 5000,
+          "description": "Maximum files to scan in one pass"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "test": "vitest",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "@vscode/test-electron": "^2.3.9",
+    "esbuild": "^0.19.12",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.1",
+    "@vscode/vsce": "^2.22.0"
+  },
+  "dependencies": {
+    "simple-git": "^3.22.0",
+    "p-limit": "^5.0.0"
+  }
+}

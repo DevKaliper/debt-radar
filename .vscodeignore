@@ -1,0 +1,10 @@
+src/
+test/
+node_modules/
+esbuild.config.mjs
+tsconfig.json
+.gitignore
+*.md
+!README.md
+.vscode/
+.github/
